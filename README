@@ -1,0 +1,27 @@
+This directory contains the following files:
+
+* README:
+  This file.
+
+* LICENSE:
+  The files in this directory are distributed under the BSD license.
+
+* hmc2.py:
+  The main module with Hybrid Monte Carlo sampler.
+  This is the only file needed. Run some tests: 'python hm2.py'
+
+* hmc2x.pyx:
+  If cython is installed, this file will be used to speed up the main loop.
+
+* f_energy.py:
+  Some example energy functions with gradients.
+  
+* f_energyx.pyx:
+  Cython version of some example energy functions with gradients.
+
+* test_hmc2.py:
+  A couple of tests. (requires nose)
+  
+* hmc.m, hmc2.m, hmc2_opt.m:
+  Original matlab version as a reference.
+
