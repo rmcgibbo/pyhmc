@@ -1,7 +1,7 @@
 """Hybrid Monte Carlo Sampling
 
 This package is a straight-forward port of the functions hmc2.m and
-hmc2_opt.m from the MCMCstuff matlab toolbox written by Aki Vehari
+hmc2_opt.m from the MCMCstuff matlab toolbox written by Aki Vehtari
 <http://www.lce.hut.fi/research/mm/mcmcstuff/>.
    
 The code is originally based on the functions hmc.m from the netlab toolbox
