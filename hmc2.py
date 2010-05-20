@@ -175,7 +175,8 @@ def hmc(f, x, gradf,
     assert window >= 0, 'window has to be >= 0'
     if window > steps:
         window = steps
-        print "setting window size to step size %d" % window
+        if display:
+            print "setting window size to step size %d" % window
 
     if persistence:
         alpha = decay
@@ -190,7 +191,8 @@ def hmc(f, x, gradf,
     if checkgrad:
         # Check gradients
         error = check_grad(f, gradf, x, *args)
-        print "Energy gradient error: %f"%error
+        if display:
+            print "Energy gradient error: %f"%error
         return error
 
     # Initialize matrix of returned samples
@@ -204,8 +206,8 @@ def hmc(f, x, gradf,
 
     # Return diagnostics?
     if return_diagnostics:
-        diagn_pos = np.zeros(nsamples, nparams)
-        diagn_mom = np.zeros(nsamples, nparams)
+        diagn_pos = np.zeros((nsamples, nparams))
+        diagn_mom = np.zeros((nsamples, nparams))
         diagn_acc = np.zeros(nsamples)
     else:
         diagn_pos = np.zeros((0,0))
@@ -247,17 +249,21 @@ def hmc(f, x, gradf,
             os.environ['C_INCLUDE_PATH']=np.get_include()
             import pyximport; pyximport.install()
             from hmc2x import hmc_main_loop as c_hmc_main_loop
-            print "Using compiled code"
+            if display:
+                print "Using compiled code"
             nreject = c_hmc_main_loop(*all_args)
         except:
-            print "Using pure python code"
+            if display:
+                print "Using pure python code"
             nreject = hmc_main_loop(*all_args)
     else:
-        print "Using pure python code"
+        if display:
+            print "Using pure python code"
         nreject = hmc_main_loop(*all_args)
 
     if display:
-        print '\nFraction of samples rejected:  %g\n'%(nreject/float(nsamples))
+        if display:
+            print '\nFraction of samples rejected:  %g\n'%(nreject/float(nsamples))
 
     # Store diagnostics
     if return_diagnostics:
@@ -395,7 +401,7 @@ def hmc_main_loop(f, x, gradf, args, p, samples,
         if return_diagnostics and k >= 0:
             diagn_pos[k,:] = x_acc
             diagn_mom[k,:] = p_acc
-            diagn_acc[k,:] = a
+            diagn_acc[k] = a
 
         if display:
             print 'New position is\n',x
