@@ -159,8 +159,8 @@ def hmc(f, x, gradf,
        the momentum vectors of the dynamic process
       acc : array
        the acceptance thresholds
-      rej : int
-       the number of rejections
+      rej : float
+       the rejection rate 
       stp : float
        the step size vectors
     """
