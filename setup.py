@@ -15,7 +15,7 @@ This software is distributed under the BSD License (see LICENSE file).
 """
 from setuptools import find_packages, setup, Extension
 import numpy as np
-from Cython.Build import cythonize
+from Cython.Distutils import build_ext
 
 DOCLINES = __doc__.split("\n")
 CLASSIFIERS = """\
@@ -37,7 +37,7 @@ setup(
     license='MIT',
     install_requires=['numpy'],
     packages=find_packages(),
-    ext_modules=cythonize(
-        Extension('hmc/_hmc', ['hmc/_hmc.pyx'],
-        include_dirs=[np.get_include()]))
+    ext_modules=[Extension('hmc._hmc', ['hmc/_hmc.pyx'],
+                           include_dirs=[np.get_include()])],
+    cmdclass={'build_ext': build_ext},
 )

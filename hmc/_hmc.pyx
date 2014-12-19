@@ -1,3 +1,4 @@
+from __future__ import print_function
 import numpy as np
 cimport numpy as np
 cimport cython
@@ -26,10 +27,10 @@ def hmc_main_loop(fun, double[::1] x, args, double[::1] p,
     cdef npy_intp window_offset = 0    # window offset initialised to zero
     cdef npy_intp k = -opt_nomit       # nomit samples are omitted, so we store
     cdef npy_intp n, stps, direction, have_rej, have_acc
-    cdef double a, E, Eold, E_acc, E_rej, H, H_old, acc_free_energy, rej_free_energy
+    cdef double a, E, E_old, E_acc, logp, E_rej, H, H_old, acc_free_energy, rej_free_energy
 
     cdef npy_intp i, j, m
-    cdef double[::1] randn
+    cdef double[::1] randn, grad
     cdef double[::1] x_old = zeros(n_params)
     cdef double[::1] p_old = zeros(n_params)
     cdef double[::1] x_acc = zeros(n_params)
@@ -39,7 +40,10 @@ def hmc_main_loop(fun, double[::1] x, args, double[::1] p,
     cdef double[::1] p_tmp = zeros(n_params)
 
     # Evaluate starting energy.
-    E, _ = fun(x, *args)
+    logp, grad = fun(x, *args)
+    E = -logp
+    if len(grad) != n_params:
+        raise ValueError('fun(x, *args) must return (logp, grad)')
 
     while k < opt_nsamples:  # samples from k >= 0
         # Store starting position and momenta
@@ -93,8 +97,9 @@ def hmc_main_loop(fun, double[::1] x, args, double[::1] p,
 
                 # First half-step of leapfrog.
                 # p = p - direction*0.5*epsilon.*feval(gradf, x, varargin{:});
-                _, grad = fun(x, args)
-                p = p - direction * 0.5 * epsilon * grad
+                logp, grad = fun(x, *args)
+                for i in range(n_params):
+                    p[i] +=  direction * 0.5 * epsilon * grad[i]
                 for i in range(n_params):
                     x[i] += direction*epsilon*p[i]
 
@@ -102,15 +107,18 @@ def hmc_main_loop(fun, double[::1] x, args, double[::1] p,
                 # for m = 1:(abs(stps)-1):
                 for m in range(int_abs(stps)-1):
                     # p = p - direction*epsilon.*feval(gradf, x, varargin{:});
-                    _, grad = fun(x, args)
-                    p = p - direction * epsilon * grad
+                    logp, grad = fun(x, *args)
+                    for i in range(n_params):
+                        p[i] +=  direction * 0.5 * epsilon * grad[i]
                     for i in range(n_params):
                         x[i] += direction * epsilon * p[i]
 
                 # Final half-step of leapfrog.
                 # p = p - direction*0.5*epsilon.*feval(gradf, x, varargin{:});
-                E, grad = fun(x, args)
-                p = p - direction * 0.5 * epsilon * grad
+                logp, grad = fun(x, *args)
+                E = -logp
+                for i in range(n_params):
+                    p[i] += direction * 0.5 * epsilon * grad[i]
 
                 # H = E + 0.5*(p*p');
                 H = E
@@ -161,7 +169,7 @@ def hmc_main_loop(fun, double[::1] x, args, double[::1] p,
             diagn_acc[j] = a
 
         if opt_display:
-            print('New position is\n',x)
+            print('New position is\n', np.asarray(x))
 
         # Take new state from the appropriate window.
         if a > random.rand():
@@ -176,7 +184,7 @@ def hmc_main_loop(fun, double[::1] x, args, double[::1] p,
         else:
             # Reject
             if k >= 0:
-                nreject = nreject + 1
+                n_reject = n_reject + 1
 
             E = E_rej
             for i in range(n_params):
@@ -203,7 +211,7 @@ def hmc_main_loop(fun, double[::1] x, args, double[::1] p,
             # Adjust momenta by a small random amount
             randn = random.randn(n_params)
             for i in range(n_params):
-                p[i] = alpha*p[i]+salpha*randn[i]
+                p[i] = alpha*p[i] + salpha*randn[i]
         else:
             # Replace all momenta
             randn = random.randn(n_params)
@@ -212,7 +220,7 @@ def hmc_main_loop(fun, double[::1] x, args, double[::1] p,
 
         k += 1
 
-    return nreject
+    return n_reject
 
 
 cdef inline double addlogs(double a, double b):

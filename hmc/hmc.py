@@ -3,7 +3,7 @@
 This package is a straight-forward port of the functions hmc2.m and
 hmc2_opt.m from the MCMCstuff matlab toolbox written by Aki Vehtari
 <http://www.lce.hut.fi/research/mm/mcmcstuff/>.
-
+   c
 The code is originally based on the functions hmc.m from the netlab toolbox
 written by Ian T Nabney <http://www.ncrg.aston.ac.uk/netlab/index.php>.
 
@@ -30,15 +30,17 @@ def hmc(fun, x0, args=(), display=False, steps=1, n_samples=1, n_omit=0,
     """Hybrid Monte Carlo sampling.
 
     Uses a hybrid Monte Carlo algorithm to sample from the distribution P ~
-    exp(-f), where f is the first argument to hmc. The Markov chain starts
+    exp(f), where fun is the first argument to hmc. The Markov chain starts
     at the point x, and the function gradf is the gradient of the `energy'
     function f.
 
     Parameters
     ----------
     fun : callable
-        Callable which returns the log probability gradient of the
-        distribution, ``logp, grad = func(x, *args)``.
+        A callable which takes a vector in the parameter spaces as input
+        and returns the natural logarithm of the posterior probabily
+        for that position, and gradient of the posterior probability with
+        respect to the parameter vector, ``logp, grad = func(x, *args)``.
     x0 : 1-d array
       Starting point for the sampling Markov chain.
 
@@ -138,19 +140,15 @@ def hmc(fun, x0, args=(), display=False, steps=1, n_samples=1, n_omit=0,
     p = random.randn(n_params)
 
     # Main loop.
-    all_args = dict(
-        fun=fun, x=x0, args=args, p=p,
-        samples=samples, energies=energies,
-        diagn_pos=diagn_pos, diagn_mom=diagn_mom,
-        diagn_acc=diagn_acc, n_samples=n_samples,
-        n_omit=n_omit, window=window, steps=steps,
-        display=display, persistence=persistence,
-        return_energies=return_energies,
-        return_diagnostics=return_diagnostics,
-        alpha=alpha, salpha=salpha,
-        epsilon=epsilon, random=random)
+    all_args = [
+        fun, x0, args, p, samples, energies,
+        diagn_pos, diagn_mom, diagn_acc,
+        n_samples, n_omit, window,
+        steps, display, persistence,
+        return_energies, return_diagnostics,
+        alpha, salpha, epsilon, random,]
 
-    n_reject = c_hmc_main_loop(**all_args)
+    n_reject = hmc_main_loop(*all_args)
 
     if display:
         print('\nFraction of samples rejected:  %g\n'%(n_reject / n_samples))
