@@ -5,10 +5,10 @@ import numpy as np
 from Cython.Distutils import build_ext
 import versioneer
 versioneer.VCS = 'git'
-versioneer.versionfile_source = 'hmc/_version.py'
-versioneer.versionfile_build = 'hmc/_version.py'
+versioneer.versionfile_source = 'pyhmc/_version.py'
+versioneer.versionfile_build = 'pyhmc/_version.py'
 versioneer.tag_prefix = '' # tags are like 1.2.0
-versioneer.parentdir_prefix = 'hmc-' # dirname like 'myproject-1.2.0'
+versioneer.parentdir_prefix = 'pyhmc-' # dirname like 'myproject-1.2.0'
 
 DOCLINES = __doc__.split("\n")
 CLASSIFIERS = """\
