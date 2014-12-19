@@ -30,7 +30,7 @@ def logprob(x, ivar):
 ```
 
 ```
-from hmc import hmc
+from pyhmc import hmc
 ivar = 1. / np.random.rand(5)
 samples = hmc(logprob, x0=np.random.randn(5), args=(ivar,), n_samples=1e4)
 ```

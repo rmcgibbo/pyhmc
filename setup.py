@@ -47,6 +47,6 @@ setup(
     license='MIT',
     install_requires=['numpy'],
     packages=find_packages(),
-    ext_modules=[Extension('hmc._hmc', ['hmc/_hmc.pyx'],
+    ext_modules=[Extension('pyhmc._hmc', ['pyhmc/_hmc.pyx'],
                            include_dirs=[np.get_include()])],
 )

@@ -21,9 +21,9 @@ test:
   requires:
     - nose
   imports:
-    - hmc
+    - pyhmc
   commands:
-    - nosetests hmc.tests
+    - nosetests pyhmc.tests
 
 about:
   home: https://github.com/rmcgibbo/pyhmc

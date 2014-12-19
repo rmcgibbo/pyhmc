@@ -28,7 +28,7 @@ If you wanted to draw samples from a 5 dimensional Gaussian, you would do someth
 .. code-block:: python
 
     # run the sampler
-    from hmc import hmc
+    from pyhmc import hmc
     ivar = 1. / np.random.rand(5)
     samples = hmc(logprob, x0=np.random.randn(5), args=(ivar,), n_samples=1e4)
 
@@ -52,7 +52,7 @@ If you wanted to draw samples from a 5 dimensional Gaussian, you would do someth
 
     installation
 
-.. currentmodule:: hmc
+.. currentmodule:: pyhmc
 .. autosummary::
     :template: function.rst
     :toctree: generated/
