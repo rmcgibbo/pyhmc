@@ -15,10 +15,6 @@
 
 import sys
 import os
-on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
-if not on_rtd:
-    import sphinx_rtd_theme
-
 
 
 # If extensions (or modules to document with autodoc) are in another directory,
@@ -128,9 +124,7 @@ html_theme = "sphinx_rtd_theme"
 #html_theme_options = {}
 
 # Add any paths that contain custom themes here, relative to this directory.
-if not on_rtd:
-    html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
-
+html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
@@ -265,7 +259,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
   ('index', 'pyhmc', 'pyhmc Documentation',
-   'Robert T. McGibbon', 'pyhmc', 'One line description of project.',
+   'Robert T. McGibbon', 'pyhmc', 'Hamiltonain Monte Carlo in Python',
    'Miscellaneous'),
 ]
 
