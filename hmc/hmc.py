@@ -30,12 +30,12 @@ __all__ = ['hmc']
 def hmc(fun, x0, args=(), display=False, steps=1, n_samples=1, n_burn=0,
         persistence=False, decay=0.9, epsilon=0.2, window=1,
         return_energies=False, return_diagnostics=False, random_state=None):
-    """Hybrid Monte Carlo sampling.
+    """Hamiltonian Monte Carlo sampler.
 
-    Uses a hybrid Monte Carlo algorithm to sample from the distribution P ~
-    exp(f), where fun is the first argument to hmc. The Markov chain starts
-    at the point x, and the function gradf is the gradient of the `energy'
-    function f.
+    Uses a Hamiltonian / Hybrid Monte Carlo algorithm to sample from the
+    distribution P ~ exp(f). The Markov chain starts at the point x0. The
+    callable ``fun`` should return the log probability and gradient of the
+    log probability.
 
     Parameters
     ----------

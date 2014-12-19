@@ -18,10 +18,13 @@ def test_1():
     samples, diag = hmc(lnprob_gaussian, x0, args=(icov,),
                   n_samples=10**4, n_burn=10**3,
                   steps=10, epsilon=0.20, return_diagnostics=True,
-                  random_state=2)
+                  random_state=2, window=1)
 
     C = np.cov(samples, rowvar=0, bias=1)
     np.testing.assert_array_almost_equal(cov, C, 1)
+    # import matplotlib.pyplot as pp
+    # pp.plot(samples[:, 0], samples[:, 1], 'x-')
+    # pp.show()
 
 def test_2():
     # test that random state is used correctly

@@ -1,0 +1,31 @@
+package:
+    name: pyhmc
+    version: !!str 0.1
+
+build:
+  preserve_egg_dir: True
+  number: 0
+
+requirements:
+  build:
+    - python
+    - setuptools
+    - cython
+    - numpy
+  run:
+    - python
+    - setuptools
+    - numpy
+
+test:
+  requires:
+    - nose
+  imports:
+    - hmc
+  commands:
+    - nosetests hmc
+
+about:
+  home: https://github.com/rmcgibbo/pyhmc
+  license: BSD
+  summary: 'pyhmc: Hamiltonain Monte Carlo Sampling in Python'
