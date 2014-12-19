@@ -1,6 +1,5 @@
 import numpy as np
 from ..hmc import hmc
-import matplotlib.pyplot as pp
 
 
 def lnprob_gaussian(x, icov):
