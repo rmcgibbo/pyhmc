@@ -1,7 +1,7 @@
-pyhmc: Hamiltonain Monte Carlo Sampling in Python
+pyhmc: Hamiltonain Monte Carlo in Python
 =================================================
 [![Build Status](https://travis-ci.org/rmcgibbo/pyhmc.svg)](https://travis-ci.org/rmcgibbo/pyhmc)
-[![License](https://pypip.in/license/pyhmc/badge.svg)](https://pypi.python.org/pypi/pyhmc)
+[![License](https://img.shields.io/badge/license-BSD-red.svg?style=flat)](https://pypi.python.org/pypi/pyhmc)
 [![Docs](https://img.shields.io/badge/docs-latest-brightgreen.svg?style=flat)](https://pythonhosted.org/pyhmc/)
 
 This package is a straight-forward port of the functions `hmc2.m` and
