@@ -16,6 +16,12 @@ This software is distributed under the BSD License (see LICENSE file).
 from setuptools import find_packages, setup, Extension
 import numpy as np
 from Cython.Distutils import build_ext
+import versioneer
+versioneer.VCS = 'git'
+versioneer.versionfile_source = 'hmc/_version.py'
+versioneer.versionfile_build = 'hmc/_version.py'
+versioneer.tag_prefix = '' # tags are like 1.2.0
+versioneer.parentdir_prefix = 'hmc-' # dirname like 'myproject-1.2.0'
 
 DOCLINES = __doc__.split("\n")
 CLASSIFIERS = """\
@@ -27,17 +33,20 @@ Programming Language :: Python
 Operating System :: OS Independent
 """
 
+cmdclass = versioneer.get_cmdclass()
+cmdclass['build_ext'] = build_ext
+
 setup(
-    name='hmc',
-    author="Morgan Fouesneau",
+    name='pyhmc',
+    author="Robert T. McGibbon",
+    version=versioneer.get_version(),
+    cmdclass=cmdclass,
     url="https://github.com/rmcgibbo/pyhmc",
     description=DOCLINES[0],
     long_description="\n".join(DOCLINES[2:]),
-    version=0.1,
     license='MIT',
     install_requires=['numpy'],
     packages=find_packages(),
     ext_modules=[Extension('hmc._hmc', ['hmc/_hmc.pyx'],
                            include_dirs=[np.get_include()])],
-    cmdclass={'build_ext': build_ext},
 )
