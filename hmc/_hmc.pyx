@@ -40,6 +40,7 @@ def hmc_main_loop(fun, double[::1] x, args, double[::1] p,
     cdef double[::1] p_tmp = zeros(n_params)
 
     # Evaluate starting energy.
+    x = x.copy()
     logp, grad = fun(x, *args)
     E = -logp
     if len(grad) != n_params:

@@ -1,17 +1,18 @@
-"""Hybrid Monte Carlo Sampling
+"""
+pyhmc: Hamiltonain Monte Carlo Sampling in Python
+=================================================
 
-This package is a straight-forward port of the functions hmc2.m and
-hmc2_opt.m from the MCMCstuff matlab toolbox written by Aki Vehtari
-<http://www.lce.hut.fi/research/mm/mcmcstuff/>.
-   c
-The code is originally based on the functions hmc.m from the netlab toolbox
-written by Ian T Nabney <http://www.ncrg.aston.ac.uk/netlab/index.php>.
+This package is a straight-forward port of the functions `hmc2.m` and
+hmc2_opt.m from the [MCMCstuff](http://www.lce.hut.fi/research/mm/mcmcstuff/)
+matlab toolbox written by Aki Vehtari. The code is originally based on the
+functions `hmc.m` from the [netlab toolbox](http://www.ncrg.aston.ac.uk/netlab/index.php)
+written by Ian T Nabney. The portion of algorithm involving "windows" is
+derived from the C code for this function included in the
+[Software for Flexible Bayesian Modeling](http://www.cs.toronto.edu/~radford/fbm.software.html)
+written by Radford Neal.
 
-The portion of algorithm involving "windows" is derived from the C code for
-this function included in the Software for Flexible Bayesian Modeling
-written by Radford Neal <http://www.cs.toronto.edu/~radford/fbm.software.html>.
-
-This software is distributed under the BSD License (see LICENSE file).
+The original Python [port](https://github.com/koepsell/pyhmc) was made
+by Kilian Koepsell, and subsequently modernized by Robert T. McGibbon.
 
 Authors
 -------
@@ -19,12 +20,14 @@ Authors
 - Robert T. McGibbon <rmcgibbo@gmail.com>
 """
 from __future__ import print_function, division
+import numbers
 import numpy as np
 from ._hmc import hmc_main_loop
+
 __all__ = ['hmc']
 
 
-def hmc(fun, x0, args=(), display=False, steps=1, n_samples=1, n_omit=0,
+def hmc(fun, x0, args=(), display=False, steps=1, n_samples=1, n_burn=0,
         persistence=False, decay=0.9, epsilon=0.2, window=1,
         return_energies=False, return_diagnostics=False, random_state=None):
     """Hybrid Monte Carlo sampling.
@@ -55,8 +58,8 @@ def hmc(fun, x0, args=(), display=False, steps=1, n_samples=1, n_omit=0,
         steps at each iteration).
     n_samples : int
         The number of samples retained from the Markov chain.
-    n_omit : int
-        The number of samples omitted from the start of the chain
+    n_burn : int
+        The number of samples omitted from the start of the chain as 'burn in'.
     persistence : bool
         If True, momentum persistence is used (i.e. the momentum
         variables decay rather than being replaced). Default: False
@@ -99,8 +102,8 @@ def hmc(fun, x0, args=(), display=False, steps=1, n_samples=1, n_omit=0,
     """
     # check some options
     assert steps >= 1, 'step size has to be >= 1'
-    assert n_samples >= 1, 'nsamples has to be >= 1'
-    assert n_omit >= 0, 'nomit has to be >= 0'
+    assert n_samples >= 1, 'n_samples has to be >= 1'
+    assert n_burn >= 0, 'n_burn has to be >= 0'
     assert decay >= 0, 'decay has to be >= 0'
     assert decay <= 1, 'decay has to be <= 1'
     assert window >= 0, 'window has to be >= 0'
@@ -143,7 +146,7 @@ def hmc(fun, x0, args=(), display=False, steps=1, n_samples=1, n_omit=0,
     all_args = [
         fun, x0, args, p, samples, energies,
         diagn_pos, diagn_mom, diagn_acc,
-        n_samples, n_omit, window,
+        n_samples, n_burn, window,
         steps, display, persistence,
         return_energies, return_diagnostics,
         alpha, salpha, epsilon, random,]
