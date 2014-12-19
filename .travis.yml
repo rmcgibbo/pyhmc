@@ -24,7 +24,7 @@ script:
   # this builds the binary, unpacks it, and runs the tests
   - conda build devtools/conda-recipe
 
-after_successg:
+after_success:
     - conda install --yes ~/miniconda/conda-bld/*/pyhmc*.bz2
     - conda install --yes pip
     - pip install -t docs/requirements.txt
