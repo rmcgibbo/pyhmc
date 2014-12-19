@@ -1,5 +1,7 @@
 import numpy as np
-from ..hmc import hmc
+import scipy.stats
+from scipy.optimize import approx_fprime
+from pyhmc import hmc
 
 
 def lnprob_gaussian(x, icov):
@@ -45,3 +47,18 @@ def test_2():
                   n_steps=10, epsilon=0.25, return_diagnostics=False,
                   random_state=0)
     np.testing.assert_array_almost_equal(samples1, samples2)
+
+
+def test_3():
+    rv = scipy.stats.loggamma(c=1)
+    eps = np.sqrt(np.finfo(float).resolution)
+    def logprob(x):
+        return rv.logpdf(x), approx_fprime(x, rv.logpdf, eps)
+
+    samples = hmc(logprob, [0], epsilon=1, n_steps=10, window=3, persistence=True)
+
+    # import matplotlib.pyplot as pp
+    (osm, osr), (slope, intercept, r) = scipy.stats.probplot(
+        samples[:,0], dist=rv, fit=True)
+    assert r > 0.99
+    # pp.show()

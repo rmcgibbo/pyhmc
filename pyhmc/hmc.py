@@ -105,6 +105,7 @@ def hmc(fun, x0, n_samples=1000, args=(), display=False, n_steps=1, n_burn=0,
     else:
         alpha = salpha = 0.
 
+    x0 = np.asarray(x0, dtype=np.double)
     n_params = len(x0)
 
     # Initialize matrix of returned samples
