@@ -4,6 +4,9 @@ branches:
   only:
     - master
 
+before_install:
+    - openssl aes-256-cbc -K $encrypted_05e80f56939b_key -iv $encrypted_05e80f56939b_iv -in .pypirc.enc -out ~\/.pypirc -d
+c
 install:
   - MINICONDA=Miniconda-latest-Linux-x86_64.sh
   - wget http://repo.continuum.io/miniconda/$MINICONDA
@@ -20,3 +23,6 @@ env:
 script:
   # this builds the binary, unpacks it, and runs the tests
   - conda build devtools/conda-recipe
+
+after_success:
+    - python setup.py upload_docs --upload-dir docs/_build/html
