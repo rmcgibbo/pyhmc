@@ -23,7 +23,7 @@ test:
   imports:
     - hmc
   commands:
-    - nosetests hmc
+    - nosetests hmc.tests
 
 about:
   home: https://github.com/rmcgibbo/pyhmc
