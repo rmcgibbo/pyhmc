@@ -14,9 +14,9 @@ written by Radford Neal <http://www.cs.toronto.edu/~radford/fbm.software.html>.
 This software is distributed under the BSD License (see LICENSE file).
 """
 from setuptools import find_packages, setup, Extension
-import os
+import numpy as np
+from Cython.Distutils import build_ext
 import versioneer
-on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 versioneer.VCS = 'git'
 versioneer.versionfile_source = 'hmc/_version.py'
 versioneer.versionfile_build = 'hmc/_version.py'
@@ -34,19 +34,7 @@ Operating System :: OS Independent
 """
 
 cmdclass = versioneer.get_cmdclass()
-
-
-if not on_rtd:
-    print('Skipping compilation!')
-    import numpy as np
-    from Cython.Distutils import build_ext
-    cmdclass['build_ext'] = build_ext
-    ext = [Extension('pyhmc._hmc',
-            ['pyhmc/_hmc.pyx'],
-            include_dirs=[np.get_include()])]
-else:
-    ext = []
-
+cmdclass['build_ext'] = build_ext
 
 setup(
     name='pyhmc',
@@ -59,6 +47,6 @@ setup(
     license='MIT',
     install_requires=['numpy'],
     packages=find_packages(),
-    ext_modules=ext,
-    zip_safe=False,
+    ext_modules=[Extension('pyhmc._hmc', ['pyhmc/_hmc.pyx'],
+                           include_dirs=[np.get_include()])],
 )
