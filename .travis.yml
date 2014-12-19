@@ -29,5 +29,5 @@ after_success:
         conda install --yes ~/miniconda/conda-bld/*/pyhmc*.bz2 &&
         conda install --yes pip cython numpy sphinx numpydoc &&
         pip install sphinx_rtd_theme &&
-        $(cd docs; make html) &&
+        cd docs && make html && cd - &&
         python setup.py upload_docs --upload-dir docs/_build/html'
