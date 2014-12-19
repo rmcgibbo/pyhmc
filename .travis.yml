@@ -25,8 +25,9 @@ script:
   - conda build devtools/conda-recipe
 
 after_success:
-    - conda install --yes ~/miniconda/conda-bld/*/pyhmc*.bz2
-    - conda install --yes pip
-    - pip install -t docs/requirements.txt
-    - $(cd docs; make html)
-    - python setup.py upload_docs --upload-dir docs/_build/html
+    - '[ "${CONDA_PY}" = "2.7" ] &&
+        conda install --yes ~/miniconda/conda-bld/*/pyhmc*.bz2 &&
+        conda install --yes pip cython numpy &&
+        pip install -r docs/requirements.txt &&
+        $(cd docs; make html) &&
+        python setup.py upload_docs --upload-dir docs/_build/html'
