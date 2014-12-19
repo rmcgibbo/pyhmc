@@ -3,7 +3,7 @@ pyhmc: Hamiltonain Monte Carlo Sampling in Python
 =================================================
 
 This package is a straight-forward port of the functions `hmc2.m` and
-hmc2_opt.m from the [MCMCstuff](http://www.lce.hut.fi/research/mm/mcmcstuff/)
+`hmc2_opt.m` from the [MCMCstuff](http://www.lce.hut.fi/research/mm/mcmcstuff/)
 matlab toolbox written by Aki Vehtari. The code is originally based on the
 functions `hmc.m` from the [netlab toolbox](http://www.ncrg.aston.ac.uk/netlab/index.php)
 written by Ian T Nabney. The portion of algorithm involving "windows" is
