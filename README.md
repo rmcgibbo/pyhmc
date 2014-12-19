@@ -14,3 +14,33 @@ Authors
 - Robert T. McGibbon <rmcgibbo@gmail.com>
 
 This software is distributed under the BSD License (see LICENSE file).
+
+Example
+-------
+
+If you wanted to draw samples from a 5 dimensional Gaussian, you would do
+something like:
+
+```
+import numpy as np
+def logprob(x, ivar):
+    logp = -0.5 * np.sum(ivar * x**2)
+    grad = -ivar * x
+    return logp, grad
+```
+
+```
+from hmc import hmc
+ivar = 1. / np.random.rand(5)
+samples = hmc(logprob, x0=np.random.randn(5), args=(ivar,), n_samples=1e4)
+```
+
+```
+# Using the beautiful $ pip install triangle_plot
+import triangle
+figure = triangle.corner(samples)
+figure.savefig('triangle.png')
+```
+
+![triangle](https://cloud.githubusercontent.com/assets/641278/5500865/09b6271c-8703-11e4-9c6b-78add8e96d87.png)
+

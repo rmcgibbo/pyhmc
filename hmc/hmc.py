@@ -27,7 +27,7 @@ from ._hmc import hmc_main_loop
 __all__ = ['hmc']
 
 
-def hmc(fun, x0, args=(), display=False, steps=1, n_samples=1, n_burn=0,
+def hmc(fun, x0, n_samples=1000, args=(), display=False, n_steps=1, n_burn=0,
         persistence=False, decay=0.9, epsilon=0.2, window=1,
         return_energies=False, return_diagnostics=False, random_state=None):
     """Hamiltonian Monte Carlo sampler.
@@ -49,15 +49,15 @@ def hmc(fun, x0, args=(), display=False, steps=1, n_samples=1, n_burn=0,
 
     Optional Parameters
     -------------------
+    n_samples : int
+        The number of samples retained from the Markov chain.
     args : tuple
         additional arguments to be passed to fun().
     display : bool
         If True, enables verbose display output. Default: False
-    steps : int
-        Defines the trajectory length (i.e. the number of leapfrog
-        steps at each iteration).
-    n_samples : int
-        The number of samples retained from the Markov chain.
+    n_steps : int
+        Defines the trajectory length between Metropolized steps (i.e. the
+        number of leapfrog steps at each iteration before accept/reject).
     n_burn : int
         The number of samples omitted from the start of the chain as 'burn in'.
     persistence : bool
@@ -101,14 +101,14 @@ def hmc(fun, x0, args=(), display=False, steps=1, n_samples=1, n_burn=0,
              the step size vectors
     """
     # check some options
-    assert steps >= 1, 'step size has to be >= 1'
+    assert n_steps >= 1, 'step size has to be >= 1'
     assert n_samples >= 1, 'n_samples has to be >= 1'
     assert n_burn >= 0, 'n_burn has to be >= 0'
     assert decay >= 0, 'decay has to be >= 0'
     assert decay <= 1, 'decay has to be <= 1'
     assert window >= 0, 'window has to be >= 0'
-    if window > steps:
-        window = steps
+    if window > n_steps:
+        window = n_steps
         if display:
             print("setting window size to step size %d" % window)
 
@@ -147,7 +147,7 @@ def hmc(fun, x0, args=(), display=False, steps=1, n_samples=1, n_burn=0,
         fun, x0, args, p, samples, energies,
         diagn_pos, diagn_mom, diagn_acc,
         n_samples, n_burn, window,
-        steps, display, persistence,
+        n_steps, display, persistence,
         return_energies, return_diagnostics,
         alpha, salpha, epsilon, random,]
 

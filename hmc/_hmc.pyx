@@ -2,7 +2,7 @@ from __future__ import print_function
 import numpy as np
 cimport numpy as np
 cimport cython
-from numpy import zeros
+from numpy import zeros, asarray
 from numpy cimport npy_intp
 from libc.math cimport sqrt, log, exp
 
@@ -41,7 +41,7 @@ def hmc_main_loop(fun, double[::1] x, args, double[::1] p,
 
     # Evaluate starting energy.
     x = x.copy()
-    logp, grad = fun(x, *args)
+    logp, grad = fun(asarray(x), *args)
     E = -logp
     if len(grad) != n_params:
         raise ValueError('fun(x, *args) must return (logp, grad)')
@@ -98,7 +98,7 @@ def hmc_main_loop(fun, double[::1] x, args, double[::1] p,
 
                 # First half-step of leapfrog.
                 # p = p - direction*0.5*epsilon.*feval(gradf, x, varargin{:});
-                logp, grad = fun(x, *args)
+                logp, grad = fun(asarray(x), *args)
                 for i in range(n_params):
                     p[i] +=  direction * 0.5 * epsilon * grad[i]
                 for i in range(n_params):
@@ -108,7 +108,7 @@ def hmc_main_loop(fun, double[::1] x, args, double[::1] p,
                 # for m = 1:(abs(stps)-1):
                 for m in range(int_abs(stps)-1):
                     # p = p - direction*epsilon.*feval(gradf, x, varargin{:});
-                    logp, grad = fun(x, *args)
+                    logp, grad = fun(asarray(x), *args)
                     for i in range(n_params):
                         p[i] +=  direction * 0.5 * epsilon * grad[i]
                     for i in range(n_params):
@@ -116,7 +116,7 @@ def hmc_main_loop(fun, double[::1] x, args, double[::1] p,
 
                 # Final half-step of leapfrog.
                 # p = p - direction*0.5*epsilon.*feval(gradf, x, varargin{:});
-                logp, grad = fun(x, *args)
+                logp, grad = fun(asarray(x), *args)
                 E = -logp
                 for i in range(n_params):
                     p[i] += direction * 0.5 * epsilon * grad[i]
