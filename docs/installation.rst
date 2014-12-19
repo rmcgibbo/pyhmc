@@ -1,6 +1,13 @@
 Installation
 ============
 
+Release Version
+---------------
+
+.. code-block:: bash
+
+    $ pip install pyhmc
+
 Development Snapshot
 --------------------
 
