@@ -1,30 +1,10 @@
-"""
-pyhmc: Hamiltonain Monte Carlo Sampling in Python
-=================================================
+from __future__ import print_function, division, absolute_import
 
-This package is a straight-forward port of the functions `hmc2.m` and
-hmc2_opt.m from the [MCMCstuff](http://www.lce.hut.fi/research/mm/mcmcstuff/)
-matlab toolbox written by Aki Vehtari. The code is originally based on the
-functions `hmc.m` from the [netlab toolbox](http://www.ncrg.aston.ac.uk/netlab/index.php)
-written by Ian T Nabney. The portion of algorithm involving "windows" is
-derived from the C code for this function included in the
-[Software for Flexible Bayesian Modeling](http://www.cs.toronto.edu/~radford/fbm.software.html)
-written by Radford Neal.
-
-The original Python [port](https://github.com/koepsell/pyhmc) was made
-by Kilian Koepsell, and subsequently modernized by Robert T. McGibbon.
-
-Authors
--------
-- Kilian Koepsell <kilian@berkeley.edu>
-- Robert T. McGibbon <rmcgibbo@gmail.com>
-"""
-from __future__ import print_function, division
 import numbers
 import numpy as np
 from ._hmc import hmc_main_loop
 
-__all__ = ['hmc']
+__all__ = ['hmc', '__version__']
 
 
 def hmc(fun, x0, n_samples=1000, args=(), display=False, n_steps=1, n_burn=0,
@@ -35,7 +15,7 @@ def hmc(fun, x0, n_samples=1000, args=(), display=False, n_steps=1, n_burn=0,
     Uses a Hamiltonian / Hybrid Monte Carlo algorithm to sample from the
     distribution P ~ exp(f). The Markov chain starts at the point x0. The
     callable ``fun`` should return the log probability and gradient of the
-    log probability.
+    log probability of the target density.
 
     Parameters
     ----------
@@ -47,8 +27,8 @@ def hmc(fun, x0, n_samples=1000, args=(), display=False, n_steps=1, n_burn=0,
     x0 : 1-d array
       Starting point for the sampling Markov chain.
 
-    Optional Parameters
-    -------------------
+    Other Parameters
+    ----------------
     n_samples : int
         The number of samples retained from the Markov chain.
     args : tuple
