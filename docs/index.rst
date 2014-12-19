@@ -1,5 +1,5 @@
-Welcome to pyhmc's documentation!
-=================================
+pyhmc: Hamiltonain Monte Carlo in Python
+========================================
 
 Introduction
 ------------
@@ -54,7 +54,7 @@ If you wanted to draw samples from a 5 dimensional Gaussian, you would do someth
 
 .. currentmodule:: hmc
 .. autosummary::
-    :template: class.rst
+    :template: function.rst
     :toctree: generated/
 
     ~hmc
