@@ -5,7 +5,7 @@ branches:
     - master
 
 before_install:
-  - openssl aes-256-cbc -K $encrypted_05e80f56939b_key -iv $encrypted_05e80f56939b_iv -in .pypirc.enc -out ~\/.pypirc -d
+  - openssl aes-256-cbc -K $encrypted_05e80f56939b_key -iv $encrypted_05e80f56939b_iv -in .pypirc.enc -out ~/.pypirc -d
 
 install:
   - MINICONDA=Miniconda-latest-Linux-x86_64.sh
