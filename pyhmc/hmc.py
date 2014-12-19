@@ -61,14 +61,15 @@ def hmc(fun, x0, n_samples=1000, args=(), display=False, n_steps=1, n_burn=0,
     samples : array, shape=(n_samples, n_params)
         Array with data samples in rows.
     logp : array, shape=(n_samples)
-        If return_logp is True, also returns an array of the log probability
-        for all samples.
+        If ``return_logp`` is ``True``, also returns an array of the log
+        probability for all samples.
     diagn : dict
-        If return_diagnostics is True, also returns a dictionary with diagnostic
-        information (position, momentum and acceptance threshold) for each step
-        of the chain in diagn.pos, diagn.mom and diagn.acc respectively.
-        All candidate states (including rejected ones) are stored in
-        diagn['pos']. The diagn dictionary contains the following items:
+        If ``return_diagnostics`` is ``True``, also returns a dictionary with
+        diagnostic information (position, momentum and acceptance threshold)
+        for each step of the chain in ``diagn['pos']``, ``diagn['mom']`` and
+        ``diagn['acc']`` respectively. All candidate states (including
+        rejected ones) are stored in ``diagn['pos']``. The diagn dictionary
+        contains the following items:
 
           ``pos`` : array
              the position vectors of the dynamic process
