@@ -1,17 +1,4 @@
-"""Hybrid Monte Carlo Sampler for Python
-
-This package is a straight-forward port of the functions hmc2.m and
-hmc2_opt.m from the MCMCstuff matlab toolbox written by Aki Vehtari
-<http://www.lce.hut.fi/research/mm/mcmcstuff/>.
-
-The code is originally based on the functions hmc.m from the netlab toolbox
-written by Ian T Nabney <http://www.ncrg.aston.ac.uk/netlab/index.php>.
-
-The portion of algorithm involving "windows" is derived from the C code for
-this function included in the Software for Flexible Bayesian Modeling
-written by Radford Neal <http://www.cs.toronto.edu/~radford/fbm.software.html>.
-
-This software is distributed under the BSD License (see LICENSE file).
+"""Hybrid Monte Carlo for Python
 """
 from setuptools import find_packages, setup, Extension
 import numpy as np
@@ -39,6 +26,7 @@ cmdclass['build_ext'] = build_ext
 setup(
     name='pyhmc',
     author="Robert T. McGibbon",
+    author_email='rmcgibbo@gmail.com',
     version=versioneer.get_version(),
     cmdclass=cmdclass,
     url="https://github.com/rmcgibbo/pyhmc",
