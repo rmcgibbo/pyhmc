@@ -17,7 +17,7 @@ def test_1():
 
     samples, diag = hmc(lnprob_gaussian, x0, args=(icov,),
                   n_samples=10**4, n_burn=10**3,
-                  steps=10, epsilon=0.20, return_diagnostics=True,
+                  n_steps=10, epsilon=0.20, return_diagnostics=True,
                   random_state=2, window=1)
 
     C = np.cov(samples, rowvar=0, bias=1)
@@ -35,11 +35,11 @@ def test_2():
 
     samples1 = hmc(lnprob_gaussian, x0, args=(icov,),
                   n_samples=10, n_burn=0,
-                  steps=10, epsilon=0.25, return_diagnostics=False,
+                  n_steps=10, epsilon=0.25, return_diagnostics=False,
                   random_state=0)
 
     samples2 = hmc(lnprob_gaussian, x0, args=(icov,),
                   n_samples=10, n_burn=0,
-                  steps=10, epsilon=0.25, return_diagnostics=False,
+                  n_steps=10, epsilon=0.25, return_diagnostics=False,
                   random_state=0)
     np.testing.assert_array_almost_equal(samples1, samples2)
