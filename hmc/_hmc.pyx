@@ -7,18 +7,14 @@ from numpy cimport npy_intp
 from libc.math cimport sqrt, log, exp
 
 
-cdef inline int int_abs(int a):
-    return a if a > 0 else -a
-
-
 @cython.boundscheck(False)
 def hmc_main_loop(fun, double[::1] x, args, double[::1] p,
-                  double[:, ::1] samples, double[::1] energies,
+                  double[:, ::1] samples, double[::1] logps,
                   double[:, ::1] diagn_pos, double[:, ::1] diagn_mom,
                   double[::1] diagn_acc, npy_intp opt_nsamples,
                   npy_intp opt_nomit, npy_intp opt_window,
                   npy_intp opt_steps, npy_intp opt_display,
-                  npy_intp opt_persistence, npy_intp return_energies,
+                  npy_intp opt_persistence, npy_intp return_logp,
                   npy_intp return_diagnostics, double alpha, double salpha,
                   double epsilon, random):
 
@@ -200,9 +196,9 @@ def hmc_main_loop(fun, double[::1] x, args, double[::1] p,
             # Store sample
             for i in range(n_params):
                 samples[j, i] = x[i]
-            if return_energies:
+            if return_logp:
                 # Store energy
-                energies[j] = E
+                logps[j] = -E
 
         # Set momenta for next iteration
         if opt_persistence:
@@ -229,3 +225,8 @@ cdef inline double addlogs(double a, double b):
         return a + log(1 + exp(b-a))
     else:
         return b + log(1 + exp(a-b))
+
+
+cdef inline int int_abs(int a):
+    return a if a > 0 else -a
+

@@ -3,7 +3,7 @@ pyhmc: Hamiltonain Monte Carlo Sampling in Python
 =================================================
 
 This package is a straight-forward port of the functions `hmc2.m` and
-`hmc2_opt.m` from the [MCMCstuff](http://www.lce.hut.fi/research/mm/mcmcstuff/)
+hmc2_opt.m from the [MCMCstuff](http://www.lce.hut.fi/research/mm/mcmcstuff/)
 matlab toolbox written by Aki Vehtari. The code is originally based on the
 functions `hmc.m` from the [netlab toolbox](http://www.ncrg.aston.ac.uk/netlab/index.php)
 written by Ian T Nabney. The portion of algorithm involving "windows" is
@@ -29,7 +29,7 @@ __all__ = ['hmc']
 
 def hmc(fun, x0, n_samples=1000, args=(), display=False, n_steps=1, n_burn=0,
         persistence=False, decay=0.9, epsilon=0.2, window=1,
-        return_energies=False, return_diagnostics=False, random_state=None):
+        return_logp=False, return_diagnostics=False, random_state=None):
     """Hamiltonian Monte Carlo sampler.
 
     Uses a Hamiltonian / Hybrid Monte Carlo algorithm to sample from the
@@ -67,27 +67,28 @@ def hmc(fun, x0, n_samples=1000, args=(), display=False, n_steps=1, n_burn=0,
         Defines the decay used when a persistent update of (leap-frog)
         momentum is used. Bounded to the interval [0, 1.).
     epsilon : float, default=0.2.
-        The step adjustment used in leap-frogs
+        The step adjustment used in the integrator. In physics-terms, this
+        is the time step.
     window : int, default=1
-        The size of the acceptance window.
-    return_energies : bool, default=False
+        The size of the acceptance window (See [1], Section 5.4)
+    return_logp : bool, default=False
         If True, the energy values for all samples are returned.
     return_diagnostics : bool, default=False
         If True, diagnostic information is returned (see below).
 
     Returns
     -------
-    samples : array
-      Array with data samples in rows.
-    energies : array
-      If return_energies is True, also returns an array of the energy values
-      (i.e. negative log probabilities) for all samples.
+    samples : array, shape=(n_samples, n_params)
+        Array with data samples in rows.
+    logp : array, shape=(n_samples)
+        If return_logp is True, also returns an array of the log probability
+        for all samples.
     diagn : dict
-      If return_diagnostics is True, also returns a dictionary with diagnostic
-      information (position, momentum and acceptance threshold) for each step
-      of the chain in diagn.pos, diagn.mom and diagn.acc respectively.
-      All candidate states (including rejected ones) are stored in
-      diagn['pos']. The diagn dictionary contains the following items:
+        If return_diagnostics is True, also returns a dictionary with diagnostic
+        information (position, momentum and acceptance threshold) for each step
+        of the chain in diagn.pos, diagn.mom and diagn.acc respectively.
+        All candidate states (including rejected ones) are stored in
+        diagn['pos']. The diagn dictionary contains the following items:
 
           ``pos`` : array
              the position vectors of the dynamic process
@@ -99,6 +100,11 @@ def hmc(fun, x0, n_samples=1000, args=(), display=False, n_steps=1, n_burn=0,
              the rejection rate
           ``stp`` : float
              the step size vectors
+
+    References
+    ----------
+    .. [1] Neal, Radford. "MCMC using Hamiltonian dynamics." Handbook of
+       Markov Chain Monte Carlo 2 (2011).
     """
     # check some options
     assert n_steps >= 1, 'step size has to be >= 1'
@@ -124,10 +130,10 @@ def hmc(fun, x0, n_samples=1000, args=(), display=False, n_steps=1, n_burn=0,
     samples = np.zeros((n_samples, n_params))
 
     # Return energies?
-    if return_energies:
-        energies = np.zeros(n_samples)
+    if return_logp:
+        logp = np.zeros(n_samples)
     else:
-        energies = np.zeros(0)
+        logp = np.zeros(0)
 
     # Return diagnostics?
     if return_diagnostics:
@@ -144,11 +150,11 @@ def hmc(fun, x0, n_samples=1000, args=(), display=False, n_steps=1, n_burn=0,
 
     # Main loop.
     all_args = [
-        fun, x0, args, p, samples, energies,
+        fun, x0, args, p, samples, logp,
         diagn_pos, diagn_mom, diagn_acc,
         n_samples, n_burn, window,
         n_steps, display, persistence,
-        return_energies, return_diagnostics,
+        return_logp, return_diagnostics,
         alpha, salpha, epsilon, random,]
 
     n_reject = hmc_main_loop(*all_args)
@@ -165,13 +171,13 @@ def hmc(fun, x0, n_samples=1000, args=(), display=False, n_steps=1, n_burn=0,
         diagn['rej'] = n_reject / n_samples   # rejection rate
         diagn['stps'] = epsilon    # stepsize vector
 
-    if return_energies or return_diagnostics:
+    if return_logp or return_diagnostics:
         out = (samples,)
     else:
         return samples
 
-    if return_energies:
-        out += (energies,)
+    if return_logp:
+        out += (logp,)
     if return_diagnostics:
         out += (diagn,)
     return out
