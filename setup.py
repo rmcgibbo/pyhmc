@@ -32,7 +32,7 @@ setup(
     url="https://github.com/rmcgibbo/pyhmc",
     description=DOCLINES[0],
     long_description="\n".join(DOCLINES[2:]),
-    license='MIT',
+    license='BSD',
     install_requires=['numpy'],
     packages=find_packages(),
     zip_safe=False,
