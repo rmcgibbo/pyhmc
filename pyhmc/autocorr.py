@@ -84,7 +84,7 @@ def integrated_autocorr(x, window=None, fast=False):
 
     Returns
     -------
-    acftime : shape=(n_dims,)
+    t_inf : shape=(n_dims,)
         The estimated integrated autocorrelation time of ``x``.
     """
     # Compute the autocorrelation function.
