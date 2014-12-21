@@ -1,5 +1,5 @@
 import numpy as np
-#import matplotlib.pyplot as pp
+from pyhmc._hmc import find_first
 from scipy.optimize import curve_fit
 from pyhmc import hmc, autocorr, integrated_autocorr
 
@@ -30,11 +30,12 @@ def test_1():
 
     ref = -1 / np.log(PHI)
     t_exp = curve_fit(xdata=np.arange(1000), ydata=acf[:1000,0], f=exp, p0=(1,))[0]
-    assert np.abs(t_exp - ref) < 0.25 * ref
+    assert np.abs(t_exp - ref) < 0.30 * ref
 
 
 def test_2():
-    corr_time = integrated_autocorr(SAMPLES)
+    corr_time1 = integrated_autocorr(SAMPLES)
+    corr_time2 = integrated_autocorr(SAMPLES, window=50)
 
     # http://www.hep.fsu.edu/~berg/teach/mcmc08/material/lecture07mcmc3.pdf
     # For a large exponential autocorrelation time t_exp, the approximation
@@ -42,5 +43,25 @@ def test_2():
     # exponential autocorrelation time, which for a AR1 model is 1/log(\phi)
 
     expected = -2/np.log(PHI)
-    assert corr_time.shape == (1,)
-    assert np.abs(corr_time - expected) < 0.25 * expected
+    assert corr_time1.shape == (1,)
+    assert corr_time1.shape == (1,)
+    assert np.abs(corr_time1 - expected) < 0.3 * expected
+    assert np.abs(corr_time2 - expected) < 0.3 * expected
+
+
+def test_find_first():
+    X = np.array([
+         [0, 0, 1, 1, 1],
+         [0, 0, 1, 0, 0],
+         [0, 1, 0, 0, 0],
+         [0, 0, 0, 0, 0],
+         [1, 1, 1, 1, 1]], dtype=np.uint8).T
+
+    np.testing.assert_array_equal(
+        find_first(X),
+        [2, 2, 1, -1, 0])
+
+def test_3():
+    samples = np.hstack((SAMPLES, SAMPLES))
+    corr_time = integrated_autocorr(samples)
+    assert corr_time.shape == (2, )

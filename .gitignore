@@ -54,3 +54,4 @@ docs/_build/
 target/
 hmc/_hmc.c
 MANIFEST
+pyhmc/_hmc.c
