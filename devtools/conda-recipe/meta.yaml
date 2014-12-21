@@ -16,11 +16,13 @@ requirements:
     - python
     - setuptools
     - numpy
+    - scipy
 
 test:
   requires:
     - nose
-    - scipy
+    - rpy2
+    - r-coda
   imports:
     - pyhmc
   commands:
