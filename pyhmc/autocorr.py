@@ -56,14 +56,14 @@ def autocorr(x, axis=0, fast=False):
 
 
 def integrated_autocorr(x, window=None, fast=False):
-    r"""Estimate the integrated autocorrelation time, :math:`\tau_{inf}` of a
+    r"""Estimate the integrated autocorrelation time, :math:`\tau_{int}` of a
     time series.
 
     See `Sokal's notes <http://www.stat.unc.edu/faculty/cji/Sokal.pdf>`_ on
     MCMC and sample estimators for autocorrelation times. This qualtity is
     also called the statistical innefficiency [1], because the effective number
     of idependent samples in a positively-correlated MCMC timeseries is
-    :math:`n_{samples}/\tau_{inf}`.
+    :math:`n_{samples}/\tau_{int}`.
 
     Parameters
     ----------
@@ -84,7 +84,7 @@ def integrated_autocorr(x, window=None, fast=False):
 
     Returns
     -------
-    t_inf : shape=(n_dims,)
+    t_int : shape=(n_dims,)
         The estimated integrated autocorrelation time of ``x``.
     """
     # Compute the autocorrelation function.
