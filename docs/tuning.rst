@@ -27,9 +27,9 @@ acceptance rate to an acceptible value.
 Then, use the :func:`autocorr` and :func:`integrated_autocorr` to estimate the
 correlation time of the sampler. The integrated autocorrelation time determines
 the statistical errors in Monte Carlo measurements of :math:`\langle f \rangle`,
-which converge like :math:`\sim 1/\sqrt{\frac{n_{samples}}{\tau_{int}}}`. The
+which converge like :math:`\sim 1/\sqrt{\frac{n_{samples}}{2\tau_{int}}}`. The
 "effective" number of independent samples thus basically reduced by a factor
-of :math:`\tau_{int}`.
+of :math:`2\tau_{int}`.
 
 To achieve a reasonably small statistical error it is necessary to make a run of length :math:`\approx 1000\tau_{int}`.
 
