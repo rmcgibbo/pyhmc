@@ -1,6 +1,7 @@
 import numpy as np
 from pyhmc._hmc import find_first
 from scipy.optimize import curve_fit
+from pyhmc.tests.test_autocorr2 import generate_AR1
 from pyhmc import hmc, autocorr, integrated_autocorr1
 
 SAMPLES = None
@@ -8,16 +9,7 @@ PHI = 0.95
 
 def setup():
     global SAMPLES
-    SAMPLES = generate_AR1(PHI, 1, 10000).reshape(-1,1)
-
-
-def generate_AR1(phi, sigma, n_steps, c=0, y0=0):
-    y = np.zeros(n_steps)
-    y[0] = y0
-    rand = np.random.normal(scale=sigma, size=(n_steps,))
-    for i in range(1, n_steps):
-        y[i] = c + phi*y[i-1] + rand[i]
-    return y
+    SAMPLES = generate_AR1(PHI, 1, 10000, random_state=0).reshape(-1,1)
 
 
 def test_1():
