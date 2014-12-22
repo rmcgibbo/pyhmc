@@ -15,8 +15,7 @@ def test_1():
     r.require('batchmeans')
     r.assign('x', x)
     ref = r('(bm(x)$se)^2 * length(x) / var(x)')[0]
-    print('val', val, 'ref', ref)
-    np.testing.assert_almost_equal(val, ref, decimal=0)
+    np.testing.assert_almost_equal(val, ref)
 
 
 def test_2():

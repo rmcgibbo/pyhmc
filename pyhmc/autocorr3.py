@@ -1,3 +1,4 @@
+from __future__ import division, absolute_import, print_function
 import numpy as np
 from pyhmc import autocorr
 from pyhmc._hmc import find_first
