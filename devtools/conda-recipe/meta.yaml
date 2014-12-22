@@ -21,7 +21,8 @@ requirements:
 test:
   requires:
     - nose
-    - rpy2
+    - statsmodels
+    - rpy
     - r-coda
     - r-batchmeans
   imports:
