@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as pp
 from pyhmc import autocorr
 from pyhmc._hmc import find_first
 
