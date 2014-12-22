@@ -22,7 +22,7 @@ test:
   requires:
     - nose
     - statsmodels
-    - rpy
+    - rpy2
     - r-coda
     - r-batchmeans
   imports:
