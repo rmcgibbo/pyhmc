@@ -23,6 +23,7 @@ test:
     - nose
     - rpy2
     - r-coda
+    - r-batchmeans
   imports:
     - pyhmc
   commands:
