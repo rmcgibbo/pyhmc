@@ -2,6 +2,48 @@ import numpy as np
 from scipy.linalg import toeplitz
 
 
+
+def integrated_autocorr2(x):
+    r"""Estimate the integrated autocorrelation time, :math:`\tau_{int}` of a
+    time series.
+
+    Notes
+    -----
+    This method estimates the spectral density at zero frequency by fitting
+    an AR(p) model, with p selected by AIC.
+
+    Parameters
+    ----------
+    x : ndarray, shape=(n_samples, n_dims)
+        The time series, with time along axis 0.
+
+    References
+    ----------
+    .. [1] Plummer, M., Best, N., Cowles, K., and Vines, K. (2006). CODA:
+        Convergence diagnosis and output analysis for MCMC. R News, 6(1):7–11.
+
+    Returns
+    -------
+    tau_int : ndarray, shape=(n_dims,)
+        The estimated integrated autocorrelation time of each dimension in
+        ``x``, considered independently.
+    """
+    if x.ndim == 1:
+        x = x.reshape(-1, 1)
+    process_var = np.var(x, axis=0, ddof=1)
+
+    tau_int = np.zeros(x.shape[1])
+    for j in range(x.shape[1]):
+        # fit an AR(p) model, with p selected by AIC
+        rho, sigma2 = yule_walker(x, order_max=10)
+        # power spectral density at zero frequency
+        spec0 = sigma2 / (1 - np.sum(rho))**2
+        # divide by the variance
+        tau_int[j] = spec0 / process_var[j]
+
+    return tau_int
+
+
 def yule_walker(X, aic=True, order_max=None, demean=True):
     """Estimate AR(p) parameters from a sequence X using Yule-Walker equation.
 
@@ -72,14 +114,3 @@ def yule_walker(X, aic=True, order_max=None, demean=True):
 
     index = np.argmin(aics)
     return rhos[index], sigmasqs[index]
-
-
-def integrated_autocorr(x):
-    # fit an AR(p) model, with p selected by AIC
-    rho, sigma2 = yule_walker(x, order_max=10)
-    # power spectral density at zero frequency
-    spec0 = sigma2 / (1 - np.sum(rho))**2
-    # divide by the variance
-    tau_int = spec0 / np.var(x, ddof=1)
-    return tau_int
-
