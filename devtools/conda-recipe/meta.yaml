@@ -16,11 +16,16 @@ requirements:
     - python
     - setuptools
     - numpy
+    - scipy
 
 test:
   requires:
     - nose
-    - scipy
+    - statsmodels
+    - rpy2
+    - r-coda        # spectrum0, spectrum0.ar, effectiveSize
+    - r-mcmc        # initseq()
+    - r-batchmeans  # bm
   imports:
     - pyhmc
   commands:

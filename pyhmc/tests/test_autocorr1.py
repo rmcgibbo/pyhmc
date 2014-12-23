@@ -1,23 +1,15 @@
 import numpy as np
 from pyhmc._hmc import find_first
 from scipy.optimize import curve_fit
-from pyhmc import hmc, autocorr, integrated_autocorr
+from pyhmc.tests.test_autocorr2 import generate_AR1
+from pyhmc import hmc, autocorr, integrated_autocorr1
 
 SAMPLES = None
 PHI = 0.95
 
 def setup():
     global SAMPLES
-    SAMPLES = generate_AR1(PHI, 1, 10000).reshape(-1,1)
-
-
-def generate_AR1(phi, sigma, n_steps, c=0, y0=0):
-    y = np.zeros(n_steps)
-    y[0] = y0
-    rand = np.random.normal(scale=sigma, size=(n_steps,))
-    for i in range(1, n_steps):
-        y[i] = c + phi*y[i-1] + rand[i]
-    return y
+    SAMPLES = generate_AR1(PHI, 1, 10000, random_state=0).reshape(-1,1)
 
 
 def test_1():
@@ -34,8 +26,8 @@ def test_1():
 
 
 def test_2():
-    corr_time1 = integrated_autocorr(SAMPLES)
-    corr_time2 = integrated_autocorr(SAMPLES, window=50)
+    corr_time1 = integrated_autocorr1(SAMPLES)
+    corr_time2 = integrated_autocorr1(SAMPLES, window=50)
 
     # http://www.hep.fsu.edu/~berg/teach/mcmc08/material/lecture07mcmc3.pdf
     # For a large exponential autocorrelation time t_exp, the approximation
@@ -61,7 +53,8 @@ def test_find_first():
         find_first(X),
         [2, 2, 1, -1, 0])
 
+
 def test_3():
     samples = np.hstack((SAMPLES, SAMPLES))
-    corr_time = integrated_autocorr(samples)
+    corr_time = integrated_autocorr1(samples)
     assert corr_time.shape == (2, )

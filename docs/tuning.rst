@@ -22,14 +22,14 @@ Practical
 ---------
 In practice, some simple advice is to set the number of steps per sample to
 :math:`\sim 10`,  ``n_steps = 10``, and then adjust ``epsilon`` to tune the
-acceptance rate to an acceptible value.
+acceptance rate to an acceptable value.
 
 Then, use the :func:`autocorr` and :func:`integrated_autocorr` to estimate the
 correlation time of the sampler. The integrated autocorrelation time determines
 the statistical errors in Monte Carlo measurements of :math:`\langle f \rangle`,
 which converge like :math:`\sim 1/\sqrt{\frac{n_{samples}}{\tau_{int}}}`. The
 "effective" number of independent samples thus basically reduced by a factor
-of :math:`\tau_{int}`. (Note that depending on the definition of :math:`\tau_{int}`, there may be an extra factor of 2, but this is already accounted for in our implemenetation.)
+of :math:`\tau_{int}`. (Note that depending on the definition of :math:`\tau_{int}`, there may be an extra factor of 2, but this is already accounted for in our implementation.)
 
 To achieve a reasonably small statistical error it is necessary to make a run of length :math:`\approx 1000\tau_{int}`.
 

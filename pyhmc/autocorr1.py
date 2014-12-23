@@ -3,7 +3,57 @@ from __future__ import division, print_function, absolute_import
 import numpy as np
 from ._hmc import find_first
 
-__all__ = ["autocorr", "integrated_autocorr"]
+__all__ = ["autocorr", "integrated_autocorr1"]
+
+
+def integrated_autocorr1(x, window=None, fast=False):
+    r"""Estimate the integrated autocorrelation time, :math:`\tau_{int}` of a
+    time series.
+
+    Parameters
+    ----------
+    x : ndarray, shape=(n_samples, n_dims)
+        The time series, with time along axis 0.
+    window : int, optional
+        The size of the window to use. If not supplied, the window is chosen
+        to be the index of the first time the autocorrelation function crosses
+        zero (Chodera 2007).
+    fast : bool, optional
+        If ``True``, only use the largest ``2^n`` entries for efficiency.
+        (default: False)
+
+    Notes
+    -----
+    This method directly sums the first `k` entries of the ACF, where `k` is
+    chosen to be the index of the first instance where the ACF crosses zero.
+
+    References
+    ----------
+    .. [1] J. D. Chodera, W. C. Swope, J. W. Pitera, C. Seok, and K. A. Dill.
+       JCTC 3(1):26-41, 2007.
+
+    Returns
+    -------
+    tau_int : ndarray, shape=(n_dims,)
+        The estimated integrated autocorrelation time of each dimension in
+        ``x``, considered independently.
+    """
+    # Compute the autocorrelation function.
+    if x.ndim == 1:
+        x = x.reshape(-1, 1)
+
+    f = autocorr(x, axis=0, fast=fast)
+    if window is None:
+        window = find_first((f < 0).astype(np.uint8))
+    elif np.isscalar(window):
+        window = window * np.ones(x.shape[1])
+    else:
+        raise NotImplementedError()
+
+    tau = np.zeros(x.shape[1])
+    for j in range(x.shape[1]):
+        tau[j] = 1 + 2*np.sum(f[:window[j], j])
+    return tau
 
 
 def autocorr(x, axis=0, fast=False):
@@ -54,52 +104,3 @@ def autocorr(x, axis=0, fast=False):
     m[axis] = 0
     return acf / acf[m]
 
-
-def integrated_autocorr(x, window=None, fast=False):
-    r"""Estimate the integrated autocorrelation time, :math:`\tau_{int}` of a
-    time series.
-
-    See `Sokal's notes <http://www.stat.unc.edu/faculty/cji/Sokal.pdf>`_ on
-    MCMC and sample estimators for autocorrelation times. This qualtity is
-    also called the statistical innefficiency [1], because the effective number
-    of idependent samples in a positively-correlated MCMC timeseries is
-    :math:`n_{samples}/\tau_{int}`.
-
-    Parameters
-    ----------
-    x : ndarray, shape=(n_samples, n_dims)
-        The time series, with time along axis 0.
-    window : int, optional
-        The size of the window to use. If not supplied, the window is chosen
-        to be the index of the first time the autocorrelation function crosses
-        zero.
-    fast : bool, optional
-        If ``True``, only use the largest ``2^n`` entries for efficiency.
-        (default: False)
-
-    References
-    ----------
-    .. [1] J. D. Chodera, W. C. Swope, J. W. Pitera, C. Seok, and K. A. Dill.
-       JCTC 3(1):26-41, 2007.
-
-    Returns
-    -------
-    t_int : shape=(n_dims,)
-        The estimated integrated autocorrelation time of ``x``.
-    """
-    # Compute the autocorrelation function.
-    if x.ndim == 1:
-        x = x.reshape(-1, 1)
-
-    f = autocorr(x, axis=0, fast=fast)
-    if window is None:
-        window = find_first((f < 0).astype(np.uint8))
-    elif np.isscalar(window):
-        window = window * np.ones(x.shape[1])
-    else:
-        raise NotImplementedError()
-
-    tau = np.zeros(x.shape[1])
-    for j in range(x.shape[1]):
-        tau[j] = 1 + 2*np.sum(f[:window[j], j])
-    return tau
