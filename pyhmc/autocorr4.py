@@ -4,7 +4,7 @@ import statsmodels.api as sm
 
 
 def integrated_autocorr4(x, max_length=200):
-    """Estimate the integrated autocorrelation time, :math:`\tau_{int}` of a
+    r"""Estimate the integrated autocorrelation time, :math:`\tau_{int}` of a
     time series.
 
     Parameters

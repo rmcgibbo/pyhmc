@@ -3,7 +3,7 @@ import numpy as np
 
 
 def integrated_autocorr5(x, size='sqrt'):
-    """Estimate the integrated autocorrelation time, :math:`\tau_{int}` of a
+    r"""Estimate the integrated autocorrelation time, :math:`\tau_{int}` of a
     time series.
 
     Parameters
@@ -18,7 +18,7 @@ def integrated_autocorr5(x, size='sqrt'):
 
     Notes
     -----
-    This method uses the constent batch means estimator [1] where the number
+    This method uses the consistent batch means estimator [1] where the number
     of batches are chosen as functions of the overall run length.
 
     References

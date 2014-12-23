@@ -1,16 +1,10 @@
-# See `Sokal's notes <http://www.stat.unc.edu/faculty/cji/Sokal.pdf>`_ on
-# MCMC and sample estimators for autocorrelation times. This qualtity is
-# also called the statistical innefficiency [1], because the effective number
-# of idependent samples in a positively-correlated MCMC timeseries is
-# :math:`n_{samples}/\tau_{int}`.
-
-
 # This code is adapted from https://github.com/dfm/emcee (MIT license)
 from __future__ import division, print_function, absolute_import
 import numpy as np
 from ._hmc import find_first
 
 __all__ = ["autocorr", "integrated_autocorr1"]
+
 
 def integrated_autocorr1(x, window=None, fast=False):
     r"""Estimate the integrated autocorrelation time, :math:`\tau_{int}` of a

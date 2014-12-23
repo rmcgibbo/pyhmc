@@ -64,13 +64,7 @@ If you wanted to draw samples from a 5 dimensional Gaussian, you would do someth
     :maxdepth: 1
 
     tuning
-
-.. autosummary::
-    :template: function.rst
-    :toctree: generated/
-
-    ~autocorr
-    ~integrated_autocorr
+    autocorr
 
 .. raw:: html
 
