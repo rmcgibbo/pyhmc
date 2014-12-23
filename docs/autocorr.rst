@@ -54,7 +54,7 @@ effective number of independent samples due to autocorrelation,
 
     n_{effective} = \frac{n}{\tau_{int}}.
 
-This quantity is also referred to as the statistical inefficiency..
+This quantity is also referred to as the statistical inefficiency, IAT, or IACT.
 
 References
 ----------
@@ -64,3 +64,4 @@ References
 4. `Plummer, M, N. Best, K. Cowles, and K. Vines (2006). CODA: convergence diagnosis and output analysis for MCMC. R News, 6(1) pp. 7-11. <http://cran.r-project.org/doc/Rnews/Rnews_2006-1.pdf#page=7>`_
 5. `Geyer, C. J. "Practical markov chain monte carlo." Statistical Science (1992): 473-483. <http://projecteuclid.org/euclid.ss/1177011137>`_
 6. `Heidelberger, P, and P D. Welch. "A spectral method for confidence interval generation and run length control in simulations." Communications of the ACM 24.4 (1981): 233-245. <http://dl.acm.org/citation.cfm?id=358630>`_
+7. `Thompson, M. B. "A Comparison of Methods for Computing Autocorrelation Time" arXiv preprint arXiv:1011.0175 (2010). <http://arxiv.org/pdf/1011.0175.pdf>`_
