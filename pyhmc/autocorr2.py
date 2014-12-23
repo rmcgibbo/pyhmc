@@ -21,7 +21,7 @@ def integrated_autocorr2(x):
     References
     ----------
     .. [1] Plummer, M., Best, N., Cowles, K., and Vines, K. (2006). CODA:
-        Convergence diagnosis and output analysis for MCMC. R News, 6(1):7–11.
+        Convergence diagnosis and output analysis for MCMC. R News, 6(1):7-11.
 
     Returns
     -------
