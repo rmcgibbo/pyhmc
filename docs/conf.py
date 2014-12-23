@@ -40,6 +40,7 @@ extensions = [
 ]
 autosummary_generate = True
 
+mathjax_path = 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
 
 html_context = {
     'github_user': 'rmcgibbo',
