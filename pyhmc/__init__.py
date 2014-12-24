@@ -25,7 +25,7 @@ from ._version import get_versions
 __version__ = get_versions()['version']
 del get_versions
 from .hmc import hmc
-from .autocorr1 import autocorr, integrated_autocorr1
+from .autocorr1 import integrated_autocorr1
 from .autocorr2 import integrated_autocorr2
 from .autocorr3 import integrated_autocorr3
 from .autocorr4 import integrated_autocorr4

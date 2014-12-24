@@ -3,17 +3,12 @@ from __future__ import division, print_function, absolute_import
 import sys
 import numpy as np
 from ._utils import find_first
-try:
-    from scipy.signal.signaltools import _next_regular
-except ImportError:
-    print('scipy >= 0.14 is required.')
-    raise
+from statsmodels.tsa.stattools import acf
+
+__all__ = ["integrated_autocorr1"]
 
 
-__all__ = ["autocorr", "integrated_autocorr1"]
-
-
-def integrated_autocorr1(x, window=None):
+def integrated_autocorr1(x):
     r"""Estimate the integrated autocorrelation time, :math:`\tau_{int}` of a
     time series.
 
@@ -21,15 +16,12 @@ def integrated_autocorr1(x, window=None):
     ----------
     x : ndarray, shape=(n_samples, n_dims)
         The time series, with time along axis 0.
-    window : int, optional
-        The size of the window to use. If not supplied, the window is chosen
-        to be the index of the first time the autocorrelation function crosses
-        zero (Chodera 2007).
 
     Notes
     -----
     This method directly sums the first `k` entries of the ACF, where `k` is
-    chosen to be the index of the first instance where the ACF crosses zero.
+    chosen to be the index of the first instance where the ACF crosses zero
+    (Chodera 2007)
 
     References
     ----------
@@ -45,58 +37,12 @@ def integrated_autocorr1(x, window=None):
     # Compute the autocorrelation function.
     if x.ndim == 1:
         x = x.reshape(-1, 1)
-
-    f = autocorr(x, axis=0)
-    if window is None:
-        window = find_first((f < 0).astype(np.uint8))
-    elif np.isscalar(window):
-        window = window * np.ones(x.shape[1])
-    else:
-        raise NotImplementedError()
+    n = len(x)
 
     tau = np.zeros(x.shape[1])
     for j in range(x.shape[1]):
-        tau[j] = 1 + 2*np.sum(f[:window[j], j])
+        f = acf(x[:,j], nlags=n, unbiased=False, fft=True)
+        window = find_first((f < 0).astype(np.uint8))
+        tau[j] = 1 + 2*f[:window].sum()
+
     return tau
-
-
-def autocorr(x, axis=0):
-    """Estimate the autocorrelation function of a time series using the FFT.
-
-    Parameters
-    ----------
-    x : ndarray, shape=(n_samples,) or shape=(n_samples, n_dims)
-        The time series. If multidimensional, set the time axis using the
-        ``axis`` keyword argument and the function will be computed for every
-        other axis.
-    axis :  int, optional
-        The time axis of ``x``. Assumed to be the first axis if not specified.
-
-    Examples
-    --------
-    >>> # [ generate samples from ``hmc`` ]
-    >>> acf = autocorr(samples)
-    >>> import matplotlib.pyplot as plt
-    >>> plt.semilogx(acf)
-
-    .. image:: ../_static/autocorr.png
-
-    Returns
-    -------
-    acf : ndarray, shape=(n_samples,) or shape=(n_samples, n_dims)
-        The autocorrelation function of ``x``
-    """
-    x = np.atleast_1d(x)
-    n = x.shape[axis]
-    x = x - np.mean(x, axis=axis)
-
-    m = [slice(None), ] * x.ndim
-    m[axis] = slice(0, n)
-
-    # Compute the FFT and then (from that) the auto-correlation function.
-    f = np.fft.fft(x, n=_next_regular(n+1), axis=axis)
-    acf = np.fft.ifft(f * np.conjugate(f), axis=axis)[m].real
-
-    m[axis] = 0
-    return acf / acf[m]
-
