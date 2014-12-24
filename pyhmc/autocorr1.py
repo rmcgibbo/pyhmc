@@ -1,8 +1,14 @@
 # This code is adapted from https://github.com/dfm/emcee (MIT license)
 from __future__ import division, print_function, absolute_import
+import sys
 import numpy as np
 from ._utils import find_first
-from .fftutils import next_fast_fft
+try:
+    from scipy.signal.signaltools import _next_regular
+except ImportError:
+    print('scipy >= 0.14 is required.')
+    raise
+
 
 __all__ = ["autocorr", "integrated_autocorr1"]
 
@@ -81,13 +87,16 @@ def autocorr(x, axis=0):
         The autocorrelation function of ``x``
     """
     x = np.atleast_1d(x)
-    m = [slice(None), ] * x.ndim
     n = x.shape[axis]
+    x = x - np.mean(x, axis=axis)
+
+    m = [slice(None), ] * x.ndim
+    m[axis] = slice(0, n)
 
     # Compute the FFT and then (from that) the auto-correlation function.
-    f = np.fft.fft(x-np.mean(x, axis=axis), n=next_fast_fft(n+1), axis=axis)
-    m[axis] = slice(0, n)
+    f = np.fft.fft(x, n=_next_regular(n+1), axis=axis)
     acf = np.fft.ifft(f * np.conjugate(f), axis=axis)[m].real
+
     m[axis] = 0
     return acf / acf[m]
 
