@@ -3,8 +3,8 @@ import numpy as np
 cimport numpy as np
 cimport cython
 from numpy import zeros, asarray
-from numpy cimport npy_intp, npy_uint8
-from libc.math cimport sqrt, log, exp
+from numpy cimport npy_intp
+from libc.math cimport log, exp
 
 
 @cython.boundscheck(False)
@@ -231,19 +231,3 @@ cdef inline int int_abs(int a):
     return a if a > 0 else -a
 
 
-def find_first(npy_uint8[:, :] X):
-    """Find the index of the first element of X along axis 0 that
-    evaluates to True.
-    """
-    cdef npy_intp i, j
-    cdef npy_intp n = X.shape[0]
-    cdef npy_intp m = X.shape[1]
-    cdef npy_intp[::1] out = zeros(m, dtype=np.intp)
-
-    for j in range(m):
-        out[j] = -1
-        for i in range(n):
-            if X[i, j]:
-                out[j] = i
-                break
-    return np.asarray(out)
