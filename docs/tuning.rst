@@ -24,7 +24,7 @@ In practice, some simple advice is to set the number of steps per sample to
 :math:`\sim 10`,  ``n_steps = 10``, and then adjust ``epsilon`` to tune the
 acceptance rate to an acceptable value.
 
-Then, use the :func:`autocorr` and :func:`integrated_autocorr` to estimate the
+Then, use autocorrelation time functions to estimate the
 correlation time of the sampler. The integrated autocorrelation time determines
 the statistical errors in Monte Carlo measurements of :math:`\langle f \rangle`,
 which converge like :math:`\sim 1/\sqrt{\frac{n_{samples}}{\tau_{int}}}`. The

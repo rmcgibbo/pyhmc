@@ -11,7 +11,6 @@ implements a few of them.
     :template: function.rst
     :toctree: generated/
 
-    ~autocorr
     ~integrated_autocorr1
     ~integrated_autocorr2
     ~integrated_autocorr3

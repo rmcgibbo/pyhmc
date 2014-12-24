@@ -1,6 +1,6 @@
 from __future__ import division, absolute_import, print_function
 import numpy as np
-from pyhmc import autocorr
+from statsmodels.tsa.stattools import acf
 from pyhmc._utils import find_first
 
 
@@ -36,15 +36,12 @@ def integrated_autocorr3(x):
     if x.ndim == 1:
         x = x.reshape(-1, 1)
 
-    acf = autocorr(x)
-    # truncate acf to the nearest multiple of two
-    acf = acf[:2*(len(acf)//2)]
     tau = np.zeros(x.shape[1])
-
     for j in range(x.shape[1]):
+        f = acf(x[:,j], nlags=2*(len(x)//2), unbiased=False, fft=True)
         # reshape and thens sum over the second axis to get the sum of the pairs
         # [1,2,3,4,5,6,7,8] -> [[1,2], [3,4], [5,6], [7,8]] -> [3, 7, 11, 15]
-        gamma = acf[:,j].reshape(-1, 2).sum(axis=1)
-        ind = find_first((gamma<0).reshape(-1,1).astype(np.uint8))[0]
+        gamma = f.reshape(-1, 2).sum(axis=1)
+        ind = find_first((gamma<0).astype(np.uint8))
         tau[j] = -1 + 2*np.sum(gamma[:ind])
     return tau
