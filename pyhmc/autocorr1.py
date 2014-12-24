@@ -49,7 +49,7 @@ def integrated_autocorr1(x, acf_cutoff=0.0):
     tau = np.zeros(x.shape[1])
     for j in range(x.shape[1]):
         f = acf(x[:,j], nlags=n, unbiased=False, fft=True)
-        window = find_first((f < 0).astype(np.uint8))
-        tau[j] = 1 + 2*f[:window].sum()
+        window = find_first((f <= acf_cutoff).astype(np.uint8))
+        tau[j] = 1 + 2*f[1:window].sum()
 
     return tau
