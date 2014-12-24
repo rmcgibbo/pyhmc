@@ -1,12 +1,13 @@
 # This code is adapted from https://github.com/dfm/emcee (MIT license)
 from __future__ import division, print_function, absolute_import
 import numpy as np
-from ._hmc import find_first
+from ._utils import find_first
+from .fftutils import next_fast_fft
 
 __all__ = ["autocorr", "integrated_autocorr1"]
 
 
-def integrated_autocorr1(x, window=None, fast=False):
+def integrated_autocorr1(x, window=None):
     r"""Estimate the integrated autocorrelation time, :math:`\tau_{int}` of a
     time series.
 
@@ -18,9 +19,6 @@ def integrated_autocorr1(x, window=None, fast=False):
         The size of the window to use. If not supplied, the window is chosen
         to be the index of the first time the autocorrelation function crosses
         zero (Chodera 2007).
-    fast : bool, optional
-        If ``True``, only use the largest ``2^n`` entries for efficiency.
-        (default: False)
 
     Notes
     -----
@@ -42,7 +40,7 @@ def integrated_autocorr1(x, window=None, fast=False):
     if x.ndim == 1:
         x = x.reshape(-1, 1)
 
-    f = autocorr(x, axis=0, fast=fast)
+    f = autocorr(x, axis=0)
     if window is None:
         window = find_first((f < 0).astype(np.uint8))
     elif np.isscalar(window):
@@ -56,7 +54,7 @@ def integrated_autocorr1(x, window=None, fast=False):
     return tau
 
 
-def autocorr(x, axis=0, fast=False):
+def autocorr(x, axis=0):
     """Estimate the autocorrelation function of a time series using the FFT.
 
     Parameters
@@ -67,9 +65,6 @@ def autocorr(x, axis=0, fast=False):
         other axis.
     axis :  int, optional
         The time axis of ``x``. Assumed to be the first axis if not specified.
-    fast : bool, optional
-        If ``True``, only use the largest ``2^n`` entries for efficiency.
-        (default: False)
 
     Examples
     --------
@@ -86,19 +81,11 @@ def autocorr(x, axis=0, fast=False):
         The autocorrelation function of ``x``
     """
     x = np.atleast_1d(x)
-    m = [slice(None), ] * len(x.shape)
-
-    # For computational efficiency, crop the chain to the largest power of
-    # two if requested.
-    if fast:
-        n = int(2**np.floor(np.log2(x.shape[axis])))
-        m[axis] = slice(0, n)
-        x = x
-    else:
-        n = x.shape[axis]
+    m = [slice(None), ] * x.ndim
+    n = x.shape[axis]
 
     # Compute the FFT and then (from that) the auto-correlation function.
-    f = np.fft.fft(x-np.mean(x, axis=axis), n=2*n, axis=axis)
+    f = np.fft.fft(x-np.mean(x, axis=axis), n=next_fast_fft(n+1), axis=axis)
     m[axis] = slice(0, n)
     acf = np.fft.ifft(f * np.conjugate(f), axis=axis)[m].real
     m[axis] = 0

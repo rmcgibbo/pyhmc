@@ -55,3 +55,4 @@ target/
 hmc/_hmc.c
 MANIFEST
 pyhmc/_hmc.c
+pyhmc/_utils.c

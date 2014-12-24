@@ -1,5 +1,5 @@
 import numpy as np
-from pyhmc._hmc import find_first
+from pyhmc._utils import find_first
 from scipy.optimize import curve_fit
 from pyhmc.tests.test_autocorr2 import generate_AR1
 from pyhmc import hmc, autocorr, integrated_autocorr1
@@ -58,3 +58,14 @@ def test_3():
     samples = np.hstack((SAMPLES, SAMPLES))
     corr_time = integrated_autocorr1(samples)
     assert corr_time.shape == (2, )
+
+
+def test_4():
+    # test that the FFT based autocorrelation is correct compared to
+    # a realspace version.
+    for n in [10, 11, 12, 100, 200]:
+        x = np.random.randn(n)
+        ac = autocorr(x)
+        x = x - np.mean(x)
+        ac1 = np.sum(x[1:]*x[:-1]) / np.sum(x**2)
+        np.testing.assert_almost_equal(ac[1], ac1)

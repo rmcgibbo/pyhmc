@@ -46,6 +46,12 @@ Operating System :: OS Independent
 
 cmdclass = versioneer.get_cmdclass()
 cmdclass['build_ext'] = build_ext
+extensions = [
+    Extension('pyhmc._hmc', ['pyhmc/_hmc.pyx'],
+              include_dirs=[np.get_include()]),
+    Extension('pyhmc._utils', ['pyhmc/_utils.pyx'],
+              include_dirs=[np.get_include()]),
+]
 
 setup(
     name='pyhmc',
@@ -60,6 +66,5 @@ setup(
     install_requires=['numpy'],
     packages=find_packages(),
     zip_safe=False,
-    ext_modules=[Extension('pyhmc._hmc', ['pyhmc/_hmc.pyx'],
-                           include_dirs=[np.get_include()])],
+    ext_modules=extensions,
 )
