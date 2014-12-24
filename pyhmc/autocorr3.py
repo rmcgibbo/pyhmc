@@ -38,7 +38,7 @@ def integrated_autocorr3(x):
 
     tau = np.zeros(x.shape[1])
     for j in range(x.shape[1]):
-        f = acf(x[:,j], nlags=2*(len(x)//2), unbiased=False, fft=True)
+        f = acf(x[:,j], nlags=2*(len(x)//2)-1, unbiased=False, fft=True)
         # reshape and thens sum over the second axis to get the sum of the pairs
         # [1,2,3,4,5,6,7,8] -> [[1,2], [3,4], [5,6], [7,8]] -> [3, 7, 11, 15]
         gamma = f.reshape(-1, 2).sum(axis=1)

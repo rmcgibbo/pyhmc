@@ -2,7 +2,7 @@ from __future__ import division, absolute_import, print_function
 import numpy as np
 
 
-def integrated_autocorr5(x, size='sqrt'):
+def integrated_autocorr5(x, size='cbrt'):
     r"""Estimate the integrated autocorrelation time, :math:`\tau_{int}` of a
     time series.
 
