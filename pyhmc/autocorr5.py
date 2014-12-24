@@ -6,6 +6,10 @@ def integrated_autocorr5(x, size='sqrt'):
     r"""Estimate the integrated autocorrelation time, :math:`\tau_{int}` of a
     time series.
 
+    This method uses the consistent non-overlapping batch means estimator [1]
+    where the number of batches are chosen as functions of the overall run
+    length.
+
     Parameters
     ----------
     x : ndarray, shape=(n_samples, n_dims)
@@ -15,11 +19,6 @@ def integrated_autocorr5(x, size='sqrt'):
         root of the sample size. "cuberoot" will cause the function to use the
         cube root of the sample size. A numeric value may be provided if
         neither "sqrt" nor "cbrt" is satisfactory.
-
-    Notes
-    -----
-    This method uses the consistent batch means estimator [1] where the number
-    of batches are chosen as functions of the overall run length.
 
     References
     ----------

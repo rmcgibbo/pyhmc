@@ -8,6 +8,11 @@ def integrated_autocorr3(x):
     r"""Estimate the integrated autocorrelation time, :math:`\tau_{int}` of a
     time series.
 
+    This method performancs a summation of empirical autocorrelation function,
+    setting the window based on the initial sequence estimator (Geyer 1992),
+    which stops when the sum of two consecutive elements in the empirica
+    autocorrelation function become negative.
+
     Parameters
     ----------
     x : ndarray, shape=(n_samples, n_dims)
@@ -16,11 +21,6 @@ def integrated_autocorr3(x):
         The data ``x`` is aggregated if necessary by taking batch means so that
         the length of the series is less than ``max.length``.
 
-    Notes
-    -----
-    This method uses the initial sequence estimator (Geyer 1992), which sums
-    consecutive elements in the empirical autocorrelation function, truncated
-    when adjacent sample ACF values become negative.
 
     References
     ----------

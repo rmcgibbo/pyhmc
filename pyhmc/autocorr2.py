@@ -8,8 +8,6 @@ def integrated_autocorr2(x):
     r"""Estimate the integrated autocorrelation time, :math:`\tau_{int}` of a
     time series.
 
-    Notes
-    -----
     This method estimates the spectral density at zero frequency by fitting
     an AR(p) model, with p selected by AIC.
 

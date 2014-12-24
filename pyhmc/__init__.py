@@ -30,3 +30,4 @@ from .autocorr2 import integrated_autocorr2
 from .autocorr3 import integrated_autocorr3
 from .autocorr4 import integrated_autocorr4
 from .autocorr5 import integrated_autocorr5
+from .autocorr6 import integrated_autocorr6

@@ -7,6 +7,10 @@ def integrated_autocorr4(x, max_length=200):
     r"""Estimate the integrated autocorrelation time, :math:`\tau_{int}` of a
     time series.
 
+    This method fits a linear regression to the lower frequency of the
+    log spectrum, which is extrapolated to zero to estimate the zero
+    frequency power spectrum.
+
     Parameters
     ----------
     x : ndarray, shape=(n_samples, n_dims)
@@ -14,12 +18,6 @@ def integrated_autocorr4(x, max_length=200):
     max_length : int
         The data ``x`` is aggregated if necessary by taking batch means so that
         the length of the series is less than ``max.length``.
-
-    Notes
-    -----
-    This method fits a linear regression to the lower frequency of the
-    log spectrum, which is extrapolated to zero to estimate the zero
-    frequency power spectrum.
 
     References
     ----------
