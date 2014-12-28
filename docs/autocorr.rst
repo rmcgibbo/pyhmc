@@ -16,6 +16,8 @@ implements a few of them.
     ~integrated_autocorr3
     ~integrated_autocorr4
     ~integrated_autocorr5
+    ~integrated_autocorr6
+
 
 Theory
 ------
