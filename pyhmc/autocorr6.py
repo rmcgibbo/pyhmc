@@ -25,8 +25,8 @@ def integrated_autocorr6(x, c=6):
     References
     ----------
     .. [1] Madras, Neal, and Alan D. Sokal. "The pivot algorithm: a highly
-    efficient Monte Carlo method for the self-avoiding walk." J.
-    Stat. Phys. 50.1-2 (1988): 109-186.
+       efficient Monte Carlo method for the self-avoiding walk." J.
+       Stat. Phys. 50.1-2 (1988): 109-186.
 
     Returns
     -------
