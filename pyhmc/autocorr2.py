@@ -34,7 +34,7 @@ def integrated_autocorr2(x):
     tau_int = np.zeros(x.shape[1])
     for j in range(x.shape[1]):
         # fit an AR(p) model, with p selected by AIC
-        rho, sigma2 = yule_walker(x, order_max=10)
+        rho, sigma2 = yule_walker(x[:,j], order_max=10)
         # power spectral density at zero frequency
         spec0 = sigma2 / (1 - np.sum(rho))**2
         # divide by the variance

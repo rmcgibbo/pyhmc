@@ -26,3 +26,7 @@ def test_1():
         r.assign('x', x)
         tau = r('nrow(x)/effectiveSize(x)')[0]
         np.testing.assert_approx_equal(tau, integrated_autocorr2(x))
+
+def test_2():
+    x = np.random.randn(100, 2)
+    integrated_autocorr2(x)
