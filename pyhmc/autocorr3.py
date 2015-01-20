@@ -17,10 +17,6 @@ def integrated_autocorr3(x):
     ----------
     x : ndarray, shape=(n_samples, n_dims)
         The time series, with time along axis 0.
-    max_length : int
-        The data ``x`` is aggregated if necessary by taking batch means so that
-        the length of the series is less than ``max.length``.
-
 
     References
     ----------
