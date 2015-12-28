@@ -8,11 +8,15 @@ import rpy2.robjects.numpy2ri
 rpy2.robjects.numpy2ri.activate()
 
 
+def setup():
+    r("install.packages('batchmeans', repos='http://cran.us.r-project.org')")
+    r.require('batchmeans')
+
+
 def test_1():
     x = generate_AR1(0.95, 1, 50**2+25, random_state=0)
     val = integrated_autocorr5(x, size='sqrt')[0]
 
-    r.require('batchmeans')
     r.assign('x', x)
     ref = r('(bm(x)$se)^2 * length(x) / var(x)')[0]
     np.testing.assert_almost_equal(val, ref)
