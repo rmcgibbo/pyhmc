@@ -23,8 +23,6 @@ test:
     - statsmodels
     - rpy2
     - r-coda        # spectrum0, spectrum0.ar, effectiveSize
-    - r-mcmc        # initseq()
-    - r-batchmeans  # bm
   imports:
     - pyhmc
   commands:

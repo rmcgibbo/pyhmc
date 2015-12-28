@@ -12,11 +12,7 @@ install:
   - wget https://raw.githubusercontent.com/pelson/Obvious-CI/master/bootstrap-obvious-ci-and-miniconda.py
   - python bootstrap-obvious-ci-and-miniconda.py ~/miniconda x64 2 --without-obvci && source ~/miniconda/bin/activate root
   - conda install --yes conda-build
-  # Sorry...
-  - export LD_LIBRARY_PATH=$HOME/miniconda/envs/_test/lib64/R/lib:$LD_LIBRARY_PATH
   - conda config --add channels r
-  - conda config --add channels rmcgibbo
-
 
 env:
   matrix:
