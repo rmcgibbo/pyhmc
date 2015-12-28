@@ -1,4 +1,5 @@
 language: c
+sudo: false
 
 branches:
   only:
@@ -8,16 +9,10 @@ before_install:
   - openssl aes-256-cbc -K $encrypted_05e80f56939b_key -iv $encrypted_05e80f56939b_iv -in .pypirc.enc -out ~/.pypirc -d
 
 install:
-  - MINICONDA=Miniconda-latest-Linux-x86_64.sh
-  - wget http://repo.continuum.io/miniconda/$MINICONDA
-  - bash $MINICONDA -b
-  - export PATH=$HOME/miniconda/bin:$PATH
+  - wget https://raw.githubusercontent.com/pelson/Obvious-CI/master/bootstrap-obvious-ci-and-miniconda.py
+  - python bootstrap-obvious-ci-and-miniconda.py ~/miniconda x64 2 --without-obvci && source ~/miniconda/bin/activate root
   - conda install --yes conda-build
-  # Sorry...
-  - export LD_LIBRARY_PATH=$HOME/miniconda/envs/_test/lib64/R/lib:$LD_LIBRARY_PATH
   - conda config --add channels r
-  - conda config --add channels rmcgibbo
-
 
 env:
   matrix:

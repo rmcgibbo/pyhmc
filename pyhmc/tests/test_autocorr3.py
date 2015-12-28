@@ -8,11 +8,15 @@ import rpy2.robjects.numpy2ri
 rpy2.robjects.numpy2ri.activate()
 
 
+def setup():
+    r("install.packages('mcmc', repos='http://cran.us.r-project.org')")
+    r.require('mcmc')
+
+
 def test_1():
     y = generate_AR1(0.95, 1, 10000)
     tau = integrated_autocorr3(y)
 
-    r.require('mcmc')
     r.assign('x', y)
     r('popvar = (var(x)*(nrow(x)-1)/nrow(x))')
     r('init = initseq(x)')
