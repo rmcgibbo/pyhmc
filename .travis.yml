@@ -6,7 +6,7 @@ branches:
     - master
 
 before_install:
-  - '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && openssl aes-256-cbc -K $encrypted_05e80f56939b_key -iv $encrypted_05e80f56939b_iv -in .pypirc.enc -out ~/.pypirc -d'
+  - '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && openssl aes-256-cbc -K $encrypted_05e80f56939b_key -iv $encrypted_05e80f56939b_iv -in .pypirc.enc -out ~/.pypirc -d || true'
 
 install:
   - wget https://raw.githubusercontent.com/pelson/Obvious-CI/master/bootstrap-obvious-ci-and-miniconda.py
