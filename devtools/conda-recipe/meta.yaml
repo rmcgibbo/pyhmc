@@ -1,9 +1,8 @@
 package:
     name: pyhmc
-    version: !!str 0.1
+    version: "0.1"
 
 build:
-  preserve_egg_dir: True
   number: 0
 
 requirements:
