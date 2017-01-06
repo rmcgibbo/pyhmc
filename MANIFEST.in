@@ -1,2 +1,3 @@
 include versioneer.py
 include hmc/_version.py
+include LICENSE
