@@ -11,6 +11,8 @@ rpy2.robjects.numpy2ri.activate()
 
 def setup():
     # TODO: clean up
+    if not os.path.exists(os.path.expanduser("~/.R")):
+        os.makedirs(os.path.expanduser("~/.R"))
     with open(os.path.expanduser('~/.R/Makevars'), 'w') as f:
         f.write('''CC=gcc
 CXX=g++''')
