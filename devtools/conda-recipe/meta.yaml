@@ -22,6 +22,7 @@ requirements:
 test:
   requires:
     - nose
+    - gcc
     - statsmodels
     - rpy2
     - r-coda        # spectrum0, spectrum0.ar, effectiveSize
