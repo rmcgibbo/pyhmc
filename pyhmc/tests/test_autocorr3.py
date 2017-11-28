@@ -1,3 +1,4 @@
+import os
 import numpy as np
 from pyhmc import integrated_autocorr3
 from pyhmc.tests.test_autocorr2 import generate_AR1
@@ -9,6 +10,7 @@ rpy2.robjects.numpy2ri.activate()
 
 
 def setup():
+    # TODO: clean up
     with open(os.path.expanduser('~/.R/Makevars'), 'w') as f:
         f.write('''CC=gcc
 CXX=g++''')
