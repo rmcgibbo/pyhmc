@@ -9,6 +9,9 @@ rpy2.robjects.numpy2ri.activate()
 
 
 def setup():
+    with open(os.path.expanduser('~/.R/Makevars'), 'w') as f:
+        f.write('''CC=gcc
+CXX=g++''')
     r("install.packages('mcmc', repos='http://cran.us.r-project.org')")
     r.require('mcmc')
 
