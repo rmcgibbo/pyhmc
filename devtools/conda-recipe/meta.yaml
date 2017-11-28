@@ -9,11 +9,13 @@ requirements:
   build:
     - python
     - setuptools
+    - statsmodels
     - cython
     - numpy
   run:
     - python
     - setuptools
+    - statsmodels
     - numpy
     - scipy
 
