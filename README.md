@@ -1,4 +1,4 @@
-pyhmc: Hamiltonain Monte Carlo in Python
+pyhmc: Hamiltonian Monte Carlo in Python
 =================================================
 [![Build Status](https://travis-ci.org/rmcgibbo/pyhmc.svg)](https://travis-ci.org/rmcgibbo/pyhmc)
 [![License](https://img.shields.io/badge/license-BSD-red.svg?style=flat)](https://pypi.python.org/pypi/pyhmc)
