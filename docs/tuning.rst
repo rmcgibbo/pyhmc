@@ -33,7 +33,7 @@ of :math:`\tau_{int}`. (Note that depending on the definition of :math:`\tau_{in
 
 To achieve a reasonably small statistical error it is necessary to make a run of length :math:`\approx 1000\tau_{int}`.
 
-See `Sokal's notes <http://www.stat.unc.edu/faculty/cji/Sokal.pdf>`_ on MCMC and sample estimators for autocorrelation times for more details.
+See `Sokal's notes <https://pdfs.semanticscholar.org/0bfe/9e3db30605fe2d4d26e1a288a5e2997e7225.pdf>`_ on MCMC and sample estimators for autocorrelation times for more details.
 
 
 References
